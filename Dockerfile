@@ -30,17 +30,21 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 # Copy project files
 COPY . .
 
-# Run composer install
-RUN composer install --no-dev --optimize-autoloader --no-interaction
+# Remove any old cached package/service files from local machine
+RUN rm -f /var/www/html/bootstrap/cache/*.php
+
+# Run composer install (includes dev dependencies like collision so artisan doesn't fail)
+RUN composer install --optimize-autoloader --no-interaction
 
 # Create storage subdirectories if missing and set permissions
 RUN mkdir -p /var/www/html/storage/framework/sessions \
     /var/www/html/storage/framework/views \
     /var/www/html/storage/framework/cache \
     /var/www/html/storage/logs \
+    /var/www/html/bootstrap/cache \
     && chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
 EXPOSE 80
 
-CMD ["sh", "-c", "php artisan config:clear && php artisan cache:clear && apache2-foreground"]
+CMD ["sh", "-c", "rm -f bootstrap/cache/*.php && php artisan config:clear && php artisan cache:clear && apache2-foreground"]
