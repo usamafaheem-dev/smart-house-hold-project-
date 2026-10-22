@@ -6,11 +6,13 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxml2-dev \
     libpq-dev \
+    sqlite3 \
+    libsqlite3-dev \
     zip \
     unzip \
     git \
     curl \
-    && docker-php-ext-install pdo_mysql pdo_pgsql mbstring exif pcntl bcmath gd \
+    && docker-php-ext-install pdo_mysql pdo_pgsql pdo_sqlite mbstring exif pcntl bcmath gd \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Enable Apache mod_rewrite
@@ -33,18 +35,21 @@ COPY . .
 # Remove any old cached package/service files from local machine
 RUN rm -f /var/www/html/bootstrap/cache/*.php
 
-# Run composer install (includes dev dependencies like collision so artisan doesn't fail)
+# Run composer install
 RUN composer install --optimize-autoloader --no-interaction
 
-# Create storage subdirectories if missing and set permissions
+# Create storage and database directories, create sqlite database, set full permissions
 RUN mkdir -p /var/www/html/storage/framework/sessions \
     /var/www/html/storage/framework/views \
     /var/www/html/storage/framework/cache \
     /var/www/html/storage/logs \
     /var/www/html/bootstrap/cache \
-    && chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
-    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+    /var/www/html/database \
+    && touch /var/www/html/database/database.sqlite \
+    && chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/database \
+    && chmod -R 777 /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/database
 
 EXPOSE 80
 
-CMD ["sh", "-c", "rm -f bootstrap/cache/*.php && php artisan config:clear && php artisan cache:clear && apache2-foreground"]
+# On boot: clear caches, ensure database file exists with permissions, run migrations and seeders, then start apache
+CMD ["sh", "-c", "rm -f bootstrap/cache/*.php && touch database/database.sqlite && chown -R www-data:www-data database storage && chmod -R 777 database storage && php artisan config:clear && php artisan cache:clear && php artisan migrate --force && php artisan db:seed --force && apache2-foreground"]
