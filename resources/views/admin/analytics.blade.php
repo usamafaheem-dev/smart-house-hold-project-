@@ -3,97 +3,274 @@
 @section('title', 'Admin — Payments & Analytics')
 
 @section('content')
-<div class="d-flex justify-content-between align-items-center mb-4">
+<!-- Header -->
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
     <div>
-        <h2 class="fw-bold text-dark mb-1"><i class="fas fa-chart-line me-2 text-danger"></i>Payments & Analytics</h2>
-        <p class="text-muted mb-0">Revenue, bookings, and provider insights at a glance.</p>
+        <div class="d-flex align-items-center gap-2 mb-1">
+            <span class="badge px-2.5 py-1 text-uppercase fw-semibold" style="background: rgba(79, 70, 229, 0.1); color: #4f46e5; font-size: 0.72rem; letter-spacing: 0.05em; border-radius: 6px;">
+                Financial Intelligence
+            </span>
+        </div>
+        <h2 class="fw-bold text-dark mb-1" style="letter-spacing: -0.02em;">
+            <i class="fas fa-chart-line text-primary me-2"></i>Payments & Analytics Overview
+        </h2>
+        <p class="text-muted small mb-0">Track real-time transactions, revenue breakdown by category, and weekly growth performance.</p>
     </div>
-    <a href="{{ route('admin.payments') }}" class="btn btn-outline-primary fw-bold"><i class="fas fa-list me-1"></i> Full Ledger</a>
+    <div class="d-flex gap-2">
+        <a href="{{ route('admin.payments') }}" class="btn btn-outline-primary fw-bold px-3 py-2 shadow-sm rounded-3">
+            <i class="fas fa-receipt me-1"></i> Full Payment Ledger
+        </a>
+    </div>
 </div>
 
-<!-- Stat Cards -->
+<!-- Modern Stat Cards -->
 <div class="row g-3 mb-4">
-    <div class="col-md-3 col-6">
-        <div class="card card-custom p-3 h-100 border-start border-success border-4">
-            <div class="text-muted small text-uppercase fw-bold">Revenue (Paid)</div>
-            <div class="fs-4 fw-bold text-success">Rs. {{ number_format($totalRevenue, 0) }}</div>
+    <!-- Paid Revenue -->
+    <div class="col-sm-6 col-lg-3">
+        <div class="card card-custom h-100 border-0 shadow-sm bg-white" style="border-radius: 14px; border-left: 5px solid #10b981 !important; padding: 1.25rem 1.4rem !important;">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="text-muted small text-uppercase fw-bold" style="font-size: 0.75rem; letter-spacing: 0.04em;">Revenue (Paid)</span>
+                <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 38px; height: 38px; background: rgba(16, 185, 129, 0.12); color: #10b981;">
+                    <i class="fas fa-wallet fs-6"></i>
+                </div>
+            </div>
+            <div class="fs-3 fw-bold text-dark mb-1" style="letter-spacing: -0.02em;">Rs. {{ number_format($totalRevenue, 0) }}</div>
+            <div class="small text-success d-flex align-items-center gap-1 fw-semibold">
+                <i class="fas fa-check-circle"></i> Cleared & Received
+            </div>
         </div>
     </div>
-    <div class="col-md-3 col-6">
-        <div class="card card-custom p-3 h-100 border-start border-warning border-4">
-            <div class="text-muted small text-uppercase fw-bold">Outstanding</div>
-            <div class="fs-4 fw-bold text-warning">Rs. {{ number_format($pendingRevenue, 0) }}</div>
+
+    <!-- Outstanding -->
+    <div class="col-sm-6 col-lg-3">
+        <div class="card card-custom h-100 border-0 shadow-sm bg-white" style="border-radius: 14px; border-left: 5px solid #f59e0b !important; padding: 1.25rem 1.4rem !important;">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="text-muted small text-uppercase fw-bold" style="font-size: 0.75rem; letter-spacing: 0.04em;">Outstanding</span>
+                <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 38px; height: 38px; background: rgba(245, 158, 11, 0.12); color: #d97706;">
+                    <i class="fas fa-hourglass-half fs-6"></i>
+                </div>
+            </div>
+            <div class="fs-3 fw-bold text-dark mb-1" style="letter-spacing: -0.02em;">Rs. {{ number_format($pendingRevenue, 0) }}</div>
+            <div class="small text-warning d-flex align-items-center gap-1 fw-semibold">
+                <i class="fas fa-clock"></i> Unpaid & Pending
+            </div>
         </div>
     </div>
-    <div class="col-md-3 col-6">
-        <div class="card card-custom p-3 h-100 border-start border-primary border-4">
-            <div class="text-muted small text-uppercase fw-bold">Total Bookings</div>
-            <div class="fs-4 fw-bold text-primary">{{ $totalBookings }}</div>
-            <div class="small text-muted">{{ $completedBookings }} completed · {{ $pendingBookings }} pending</div>
+
+    <!-- Total Bookings -->
+    <div class="col-sm-6 col-lg-3">
+        <div class="card card-custom h-100 border-0 shadow-sm bg-white" style="border-radius: 14px; border-left: 5px solid #4f46e5 !important; padding: 1.25rem 1.4rem !important;">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="text-muted small text-uppercase fw-bold" style="font-size: 0.75rem; letter-spacing: 0.04em;">Total Bookings</span>
+                <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 38px; height: 38px; background: rgba(79, 70, 229, 0.12); color: #4f46e5;">
+                    <i class="fas fa-calendar-check fs-6"></i>
+                </div>
+            </div>
+            <div class="fs-3 fw-bold text-dark mb-1" style="letter-spacing: -0.02em;">{{ $totalBookings }}</div>
+            <div class="small text-muted">
+                <span class="text-success fw-semibold">{{ $completedBookings }} completed</span> · {{ $pendingBookings }} pending
+            </div>
         </div>
     </div>
-    <div class="col-md-3 col-6">
-        <div class="card card-custom p-3 h-100 border-start border-info border-4">
-            <div class="text-muted small text-uppercase fw-bold">Providers</div>
-            <div class="fs-4 fw-bold text-info">{{ $totalProviders }}</div>
-            <div class="small text-muted">{{ $pendingProviders }} pending approval</div>
+
+    <!-- Providers -->
+    <div class="col-sm-6 col-lg-3">
+        <div class="card card-custom h-100 border-0 shadow-sm bg-white" style="border-radius: 14px; border-left: 5px solid #06b6d4 !important; padding: 1.25rem 1.4rem !important;">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="text-muted small text-uppercase fw-bold" style="font-size: 0.75rem; letter-spacing: 0.04em;">Active Providers</span>
+                <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 38px; height: 38px; background: rgba(6, 182, 212, 0.12); color: #0891b2;">
+                    <i class="fas fa-user-shield fs-6"></i>
+                </div>
+            </div>
+            <div class="fs-3 fw-bold text-dark mb-1" style="letter-spacing: -0.02em;">{{ $totalProviders }}</div>
+            <div class="small text-muted">
+                @if($pendingProviders > 0)
+                    <span class="text-danger fw-semibold">{{ $pendingProviders }} awaiting approval</span>
+                @else
+                    <span class="text-muted">All providers approved</span>
+                @endif
+            </div>
         </div>
     </div>
 </div>
 
+<!-- Charts Section -->
 <div class="row g-4 mb-4">
-    <!-- Revenue by Category (doughnut) -->
+    <!-- Left Chart: Revenue by Category (Doughnut + Breakdown) -->
     <div class="col-lg-5">
-        <div class="card card-custom p-4 h-100">
-            <h5 class="fw-bold text-dark mb-3"><i class="fas fa-chart-pie text-primary me-2"></i>Revenue by Category</h5>
+        <div class="card card-custom p-4 h-100 border-0 shadow-sm bg-white" style="border-radius: 16px;">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="d-flex align-items-center gap-2">
+                    <div class="rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 34px; height: 34px; background: rgba(79, 70, 229, 0.1); color: #4f46e5;">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold text-dark mb-0 fs-6">Revenue by Category</h5>
+                        <small class="text-muted">Earnings split across specialties</small>
+                    </div>
+                </div>
+            </div>
+
             @if($revenueByCategory->isEmpty())
                 <div class="text-center text-muted py-5">
-                    <i class="fas fa-chart-pie fa-3x mb-3 d-block text-secondary"></i>
-                    No paid revenue yet.
+                    <i class="fas fa-chart-pie fa-3x mb-3 d-block text-secondary opacity-50"></i>
+                    No paid transactions recorded yet.
                 </div>
             @else
-                <canvas id="categoryChart" height="240"></canvas>
+                <!-- Doughnut Canvas with Center Stat -->
+                <div class="position-relative my-2 d-flex justify-content-center align-items-center" style="height: 220px;">
+                    <canvas id="categoryChart"></canvas>
+                    <div class="position-absolute text-center" style="pointer-events: none; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                        <span class="text-muted text-uppercase fw-bold d-block" style="font-size: 0.68rem; letter-spacing: 0.05em;">Total Paid</span>
+                        <div class="fw-bold text-dark fs-5 mb-0">Rs. {{ number_format($totalRevenue, 0) }}</div>
+                    </div>
+                </div>
+
+                <!-- Sleek Category Breakdown Progress List -->
+                <div class="mt-3 pt-3 border-top">
+                    @php
+                        $palette = ['#4f46e5', '#06b6d4', '#10b981', '#f59e0b', '#ec4899', '#8b5cf6'];
+                        $totalCatSum = $revenueByCategory->sum() ?: 1;
+                        $catIdx = 0;
+                    @endphp
+                    <div class="d-flex flex-column gap-2.5">
+                        @foreach($revenueByCategory as $catName => $catAmount)
+                            @php
+                                $color = $palette[$catIdx % count($palette)];
+                                $percent = round(($catAmount / $totalCatSum) * 100);
+                                $catIdx++;
+                            @endphp
+                            <div>
+                                <div class="d-flex justify-content-between align-items-center small mb-1">
+                                    <span class="d-flex align-items-center gap-2 fw-semibold text-dark">
+                                        <span style="width: 10px; height: 10px; border-radius: 50%; background: {{ $color }}; display: inline-block;"></span>
+                                        {{ $catName }}
+                                    </span>
+                                    <span class="text-muted fw-bold">
+                                        Rs. {{ number_format($catAmount, 0) }}
+                                        <span class="badge bg-light text-muted border ms-1" style="font-size: 0.7rem;">{{ $percent }}%</span>
+                                    </span>
+                                </div>
+                                <div class="progress" style="height: 6px; background-color: #f1f5f9; border-radius: 10px;">
+                                    <div class="progress-bar" role="progressbar" style="width: {{ $percent }}%; background-color: {{ $color }}; border-radius: 10px;"></div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
             @endif
         </div>
     </div>
 
-    <!-- Payments over time (line) -->
+    <!-- Right Chart: Paid Revenue (Last 7 Days) -->
     <div class="col-lg-7">
-        <div class="card card-custom p-4 h-100">
-            <h5 class="fw-bold text-dark mb-3"><i class="fas fa-chart-line text-success me-2"></i>Paid Revenue — Last 7 Days</h5>
-            <canvas id="dailyChart" height="240"></canvas>
+        <div class="card card-custom p-4 h-100 border-0 shadow-sm bg-white" style="border-radius: 16px;">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="d-flex align-items-center gap-2">
+                    <div class="rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 34px; height: 34px; background: rgba(16, 185, 129, 0.1); color: #10b981;">
+                        <i class="fas fa-chart-area"></i>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold text-dark mb-0 fs-6">Paid Revenue — Last 7 Days</h5>
+                        <small class="text-muted">Daily incoming transaction volume</small>
+                    </div>
+                </div>
+                <div class="badge px-3 py-1.5 rounded-pill fw-bold" style="background: rgba(16, 185, 129, 0.12); color: #059669; font-size: 0.78rem;">
+                    7-Day Total: Rs. {{ number_format($paymentsByDayData->sum(), 0) }}
+                </div>
+            </div>
+
+            <!-- Line Chart Area -->
+            <div class="position-relative" style="height: 260px;">
+                <canvas id="dailyChart"></canvas>
+            </div>
+
+            <!-- Chart Quick Insights Footer -->
+            <div class="row g-2 mt-3 pt-3 border-top text-center">
+                <div class="col-4">
+                    <div class="text-muted small text-uppercase" style="font-size: 0.68rem; letter-spacing: 0.05em;">Peak Day</div>
+                    <div class="fw-bold text-dark small">Rs. {{ number_format($paymentsByDayData->max(), 0) }}</div>
+                </div>
+                <div class="col-4 border-start border-end">
+                    <div class="text-muted small text-uppercase" style="font-size: 0.68rem; letter-spacing: 0.05em;">Daily Avg</div>
+                    <div class="fw-bold text-dark small">Rs. {{ number_format($paymentsByDayData->avg(), 0) }}</div>
+                </div>
+                <div class="col-4">
+                    <div class="text-muted small text-uppercase" style="font-size: 0.68rem; letter-spacing: 0.05em;">Recorded Invoices</div>
+                    <div class="fw-bold text-dark small">{{ $recentPayments->count() }} Invoices</div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-<!-- Recent Payments -->
-<div class="card card-custom p-4">
-    <h5 class="fw-bold text-dark mb-3"><i class="fas fa-receipt text-primary me-2"></i>Recent Payments</h5>
+<!-- Recent Payments Table Card -->
+<div class="card card-custom p-4 border-0 shadow-sm bg-white" style="border-radius: 16px;">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="d-flex align-items-center gap-2">
+            <div class="rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 34px; height: 34px; background: rgba(79, 70, 229, 0.1); color: #4f46e5;">
+                <i class="fas fa-receipt"></i>
+            </div>
+            <div>
+                <h5 class="fw-bold text-dark mb-0 fs-6">Recent Payments Ledger</h5>
+                <small class="text-muted">Latest settled customer transactions</small>
+            </div>
+        </div>
+        <a href="{{ route('admin.payments') }}" class="btn btn-sm btn-light fw-bold border rounded-pill px-3">
+            View All <i class="fas fa-arrow-right ms-1"></i>
+        </a>
+    </div>
+
     <div class="table-responsive">
         <table class="table table-hover align-middle mb-0">
-            <thead class="table-light">
+            <thead class="table-light text-uppercase small text-muted" style="font-size: 0.75rem;">
                 <tr>
                     <th>Invoice #</th>
                     <th>Customer</th>
-                    <th>Service</th>
-                    <th>Method</th>
+                    <th>Service Category</th>
+                    <th>Payment Method</th>
                     <th>Amount</th>
                     <th>Paid At</th>
+                    <th class="text-end">Status</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse($recentPayments as $payment)
                     <tr>
-                        <td><span class="badge bg-dark font-monospace">{{ $payment->invoice_number }}</span></td>
-                        <td class="fw-semibold text-dark">{{ $payment->booking->customer->name ?? 'N/A' }}</td>
-                        <td>{{ $payment->booking->category->name ?? 'N/A' }}</td>
-                        <td><span class="badge bg-light text-dark border text-uppercase">{{ $payment->method }}</span></td>
-                        <td class="text-success fw-bold">Rs. {{ number_format($payment->amount, 2) }}</td>
-                        <td class="small text-muted">{{ $payment->paid_at ? $payment->paid_at->format('M d, Y h:i A') : '' }}</td>
+                        <td>
+                            <span class="badge bg-dark bg-opacity-75 font-monospace px-2 py-1">{{ $payment->invoice_number }}</span>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold text-white small" style="width: 30px; height: 30px; background: var(--primary-gradient);">
+                                    {{ strtoupper(substr($payment->booking->customer->name ?? 'C', 0, 1)) }}
+                                </div>
+                                <span class="fw-semibold text-dark">{{ $payment->booking->customer->name ?? 'N/A' }}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge bg-light text-dark border">{{ $payment->booking->category->name ?? 'General' }}</span>
+                        </td>
+                        <td>
+                            <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 text-uppercase px-2">
+                                <i class="fas fa-credit-card me-1"></i> {{ $payment->method }}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="text-success fw-bold fs-6">Rs. {{ number_format($payment->amount, 0) }}</span>
+                        </td>
+                        <td class="small text-muted">
+                            {{ $payment->paid_at ? $payment->paid_at->format('M d, Y · h:i A') : '-' }}
+                        </td>
+                        <td class="text-end">
+                            <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill px-2.5 py-1">
+                                <i class="fas fa-check-circle me-1"></i> Paid
+                            </span>
+                        </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="text-center py-4 text-muted">No payments recorded yet.</td>
+                        <td colspan="7" class="text-center py-4 text-muted">No payments recorded yet.</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -106,46 +283,130 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script>
 $(document).ready(function() {
-    const palette = ['#4f46e5', '#7c3aed', '#3b82f6', '#2dd4bf', '#10b981', '#f59e0b', '#ef4444', '#ec4899'];
+    // Modern curated color palette
+    const modernPalette = ['#4f46e5', '#06b6d4', '#10b981', '#f59e0b', '#ec4899', '#8b5cf6'];
 
+    // 1. Doughnut Chart (Revenue by Category)
     @if(!$revenueByCategory->isEmpty())
     const catLabels = @json($revenueByCategory->keys());
     const catData = @json($revenueByCategory->values()).map(Number);
-    new Chart(document.getElementById('categoryChart'), {
+    const catCtx = document.getElementById('categoryChart').getContext('2d');
+
+    new Chart(catCtx, {
         type: 'doughnut',
         data: {
             labels: catLabels,
-            datasets: [{ data: catData, backgroundColor: palette, borderWidth: 2, borderColor: '#fff' }]
-        },
-        options: {
-            responsive: true,
-            plugins: { legend: { position: 'bottom' } },
-            cutout: '60%'
-        }
-    });
-    @endif
-
-    const dayLabels = @json($paymentsByDayLabels);
-    const dayData = @json($paymentsByDayData).map(Number);
-    new Chart(document.getElementById('dailyChart'), {
-        type: 'line',
-        data: {
-            labels: dayLabels,
             datasets: [{
-                label: 'Paid Revenue (Rs.)',
-                data: dayData,
-                borderColor: '#10b981',
-                backgroundColor: 'rgba(16, 185, 129, 0.12)',
-                fill: true,
-                tension: 0.35,
-                pointBackgroundColor: '#10b981',
-                pointRadius: 4
+                data: catData,
+                backgroundColor: modernPalette,
+                borderWidth: 3,
+                borderColor: '#ffffff',
+                hoverOffset: 6,
+                borderRadius: 4
             }]
         },
         options: {
             responsive: true,
-            plugins: { legend: { display: false } },
-            scales: { y: { beginAtZero: true, ticks: { callback: v => 'Rs. ' + v } } }
+            maintainAspectRatio: false,
+            cutout: '72%',
+            plugins: {
+                legend: {
+                    display: false // Using our custom sleek progress breakdown below
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                    titleFont: { size: 13, weight: 'bold' },
+                    bodyFont: { size: 12 },
+                    padding: 12,
+                    cornerRadius: 8,
+                    callbacks: {
+                        label: function(context) {
+                            const val = context.raw || 0;
+                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                            const pct = Math.round((val / total) * 100);
+                            return ` Rs. ${val.toLocaleString()} (${pct}%)`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+    @endif
+
+    // 2. Line Chart (Paid Revenue — Last 7 Days)
+    const dayLabels = @json($paymentsByDayLabels);
+    const dayData = @json($paymentsByDayData).map(Number);
+    const dailyCanvas = document.getElementById('dailyChart');
+    const dailyCtx = dailyCanvas.getContext('2d');
+
+    // Create elegant smooth vertical gradient
+    const gradient = dailyCtx.createLinearGradient(0, 0, 0, 260);
+    gradient.addColorStop(0, 'rgba(16, 185, 129, 0.28)');
+    gradient.addColorStop(0.7, 'rgba(16, 185, 129, 0.05)');
+    gradient.addColorStop(1, 'rgba(16, 185, 129, 0.0)');
+
+    new Chart(dailyCtx, {
+        type: 'line',
+        data: {
+            labels: dayLabels,
+            datasets: [{
+                label: 'Paid Revenue',
+                data: dayData,
+                borderColor: '#10b981',
+                borderWidth: 2.8,
+                backgroundColor: gradient,
+                fill: true,
+                tension: 0.38,
+                pointBackgroundColor: '#10b981',
+                pointBorderColor: '#ffffff',
+                pointBorderWidth: 2.5,
+                pointRadius: 5,
+                pointHoverRadius: 7,
+                pointHoverBorderWidth: 3
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                    titleFont: { size: 13, weight: 'bold' },
+                    bodyFont: { size: 12 },
+                    padding: 12,
+                    cornerRadius: 8,
+                    displayColors: false,
+                    callbacks: {
+                        label: function(context) {
+                            return 'Revenue: Rs. ' + context.parsed.y.toLocaleString();
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: 'rgba(226, 232, 240, 0.7)',
+                        borderDash: [4, 4]
+                    },
+                    ticks: {
+                        color: '#64748b',
+                        font: { size: 11 },
+                        callback: function(val) {
+                            return 'Rs. ' + val.toLocaleString();
+                        }
+                    }
+                },
+                x: {
+                    grid: { display: false },
+                    ticks: {
+                        color: '#64748b',
+                        font: { size: 11, weight: '500' }
+                    }
+                }
+            }
         }
     });
 });
